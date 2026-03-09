@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 class UserService {
 
+  
   async register({ name, email, password }) {
 
     const userExists = await userRepository.findByEmail(email);
@@ -45,6 +46,21 @@ class UserService {
 
     return { user, token };
   }
+  async getProfile(userId) {
+
+  const user = await userRepository.findById(userId);
+
+  if (!user) {
+    throw new Error("Usuário não encontrado");
+  }
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    createdAt: user.createdAt
+  };
+}
 }
 
 export default new UserService();

@@ -1,22 +1,28 @@
-const jwt = ('jsonwebtoken')
+import jwt from "jsonwebtoken";
 
- function authMiddleware(req, res, next) {
 
-  const authHeader = req.headers.authorization
+function authMiddleware(req, res, next) {
+
+  const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ error: 'Token não fornecido' })
+    return res.status(401).json({ error: "Token não fornecido" });
   }
 
-  const [, token] = authHeader.split(' ')
+  const [, token] = authHeader.split(" ");
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    req.userId = decoded.id
-    return next()
-  } catch {
-    return res.status(401).json({ error: 'Token inválido' })
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.userId = decoded.id;
+
+    return next();
+
+  } catch (error) {
+    return res.status(401).json({ error: "Token inválido" });
   }
+  
 }
 
-export default authMiddleware
+
+export default authMiddleware;

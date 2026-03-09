@@ -20,6 +20,16 @@ class UserController {
     }
   }
 
+  async getProfile(req, res) {
+    try{
+      const user = await userService.getProfile(req.userId);
+      return res.json(user);
+    }catch (error){
+      return res.status(400).json({error: error.message})
+    }
+
+  }
+
 }
 
 export default new UserController()
